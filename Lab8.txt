@@ -1,0 +1,54 @@
+--1. Object (Not Final Procedure)
+--2. Object body creation
+--3. Create a child (children under parent name) and member procedure (overriding)
+set serveroutput on;
+
+create or replace type car as object
+(
+brand varchar(20),
+mmodel varchar(20),
+price number(10),
+not final member procedure display
+)not final;
+/
+
+create or replace type body car  as 
+
+member procedure display is 
+begin
+dbms_output.put_line('Car Model '||mmodel);
+dbms_output.put_line('Car Brand '||brand);
+dbms_output.put_line('Car Price '||price);
+end display;
+end;
+/
+
+create or replace type suv under car
+(
+ overriding member procedure display
+)
+/
+
+create or replace type body suv  as 
+
+overriding member procedure display is 
+begin
+dbms_output.put_line('Car Model '||mmodel);
+dbms_output.put_line('Car Brand '||brand);
+dbms_output.put_line('Car Price '||price);
+end display;
+end;
+/
+
+Declare 
+car1 suv;
+car2 suv;
+begin
+car1:=suv('Lamborgini Urus','2021',577000);
+car2:=suv('Range Rover','2015',160000);
+car1.display;
+car2.display;
+end;
+/
+
+
